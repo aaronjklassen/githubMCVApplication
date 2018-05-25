@@ -9,6 +9,7 @@ namespace githubMVCApplication.Models
         {
             Repositories = repositories;
             User = user;
+            
         }
 
         public IEnumerable<Repository> Repositories { get; private set; }

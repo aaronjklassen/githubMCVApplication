@@ -11,12 +11,14 @@ namespace githubMVCApplication.Controllers
     {
         const String CLIENT_ID = "705b86b5adba6afa4363";
         private const string CLIENT_SECRET = "38ae61180a749b2ebc4441c3c6d0046f28f49e28";
-
+        // Create new instnace of github client
         readonly GitHubClient client = new GitHubClient(new ProductHeaderValue("Github-MVC-Demo"), new Uri("https://github.com/"));
 
         public async Task<ActionResult> Index()
         {
+
             var accessToken = Session["oAuthToken"] as String;
+            //If access token isn't empty
             if(accessToken != null)
             {
                 client.Credentials = new Credentials(accessToken);
@@ -26,6 +28,7 @@ namespace githubMVCApplication.Controllers
             {
                 var repositories = await client.Repository.GetAllForCurrent();
                 var user = await client.User.Current();
+
                 var model = new IndexViewModel(repositories, user);
 
                 return View(model);
@@ -66,12 +69,6 @@ namespace githubMVCApplication.Controllers
             var oauthLoginURL = client.Oauth.GetGitHubLoginUrl(request);
             return oauthLoginURL.ToString();
         }
-
-        /*public async Task<ActionResult> Emojis()
-        {
-            var emojis = await client.Miscellaneous.GetEmojis();
-            return View(emojis);
-        }*/
     
     }
 }
