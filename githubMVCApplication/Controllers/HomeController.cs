@@ -12,7 +12,7 @@ namespace githubMVCApplication.Controllers
         const String CLIENT_ID = "705b86b5adba6afa4363";
         private const string CLIENT_SECRET = "38ae61180a749b2ebc4441c3c6d0046f28f49e28";
 
-        readonly GitHubClient client = new GitHubClient(new ProductHeaderValue("Haack-GitHub-Oauth-Demo"), new Uri("https://github.com/"));
+        readonly GitHubClient client = new GitHubClient(new ProductHeaderValue("Github-MVC-Demo"), new Uri("https://github.com/"));
 
         public async Task<ActionResult> Index()
         {
@@ -25,7 +25,9 @@ namespace githubMVCApplication.Controllers
             try
             {
                 var repositories = await client.Repository.GetAllForCurrent();
-                var model = new IndexViewModel(repositories);
+                var user = await client.User.Current();
+                var model = new IndexViewModel(repositories, user);
+
                 return View(model);
             }
             catch(AuthorizationException)
